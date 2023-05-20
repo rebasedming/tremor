@@ -33,7 +33,11 @@ export default [
         ...outputOptions,
       },
     ],
-    external: [/node_modules/],
+    external: (id) => {
+      const path = require("path");
+      const localNodeModules = path.resolve(__dirname, "node_modules");
+      return id.startsWith(localNodeModules);
+    },
     plugins: [
       peerDepsExternal(),
       resolve(),
