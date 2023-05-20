@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
+import path from "path";
+
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
@@ -33,7 +35,7 @@ export default [
       resolve(),
       commonjs(),
       typescript({
-        tsconfig: "./tsconfig.json",
+        tsconfig: path.resolve(__dirname, "./tsconfig.json"),
         exclude: ["**/stories/**", "**/tests/**"],
       }),
       terser(),
@@ -43,7 +45,13 @@ export default [
   {
     input: "dist/esm/index.d.ts",
     output: [{ file: "dist/index.d.ts", format: "esm" }],
-    plugins: [dts()],
+    plugins: [
+      typescript({
+        tsconfig: path.resolve(__dirname, "./tsconfig.json"),
+        exclude: ["**/stories/**", "**/tests/**"],
+      }),
+      dts(),
+    ],
     external: [/\.css$/],
   },
 ];
