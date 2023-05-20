@@ -32,6 +32,7 @@ export interface MultiSelectBoxProps<T> {
   defaultValue?: T[];
   value?: T[];
   onValueChange?: (value: T[]) => void;
+  onInputValueChange?: (value: string) => void;
   handleSelect?: (values: any[]) => void; // Deprecated in next major release
   placeholder?: string;
   icon?: React.ElementType | React.JSXElementConstructor<any>;
@@ -45,6 +46,7 @@ const MultiSelectBox = <T,>({
   defaultValue,
   value,
   onValueChange,
+  onInputValueChange,
   handleSelect, // Deprecated
   placeholder = "Select...",
   icon,
@@ -106,6 +108,11 @@ const MultiSelectBox = <T,>({
     setSelectedValue(newSelectedItems);
     onValueChange?.(newSelectedItems);
     handleSelect?.(newSelectedItems);
+  };
+
+  const handleInputValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    onInputValueChange?.(e.target.value);
   };
 
   const handleReset = () => {
@@ -257,7 +264,7 @@ const MultiSelectBox = <T,>({
               fontSize.sm,
               fontWeight.md
             )}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleInputValueChange}
           />
         </div>
         <SelectedValueContext.Provider

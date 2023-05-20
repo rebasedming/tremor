@@ -30,6 +30,7 @@ export interface SelectBoxProps<T> {
   defaultValue?: T;
   value?: T;
   onValueChange?: (value: T) => void;
+  onInputValueChange?: (value: string) => void;
   handleSelect?: (value: any) => void; // Deprecated
   placeholder?: string;
   icon?: React.ElementType | React.JSXElementConstructor<any>;
@@ -42,6 +43,7 @@ const SelectBox = <T,>({
   defaultValue,
   value,
   onValueChange,
+  onInputValueChange,
   handleSelect, // Deprecated
   placeholder = "Select...",
   icon,
@@ -106,6 +108,8 @@ const SelectBox = <T,>({
   const handleInputValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setInputValue(e.target.value);
+
+    onInputValueChange?.(e.target.value);
   };
 
   const [hoveredValue, handleKeyDown] = useSelectOnKeyDown(
